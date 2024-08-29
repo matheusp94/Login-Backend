@@ -8,7 +8,7 @@ const app = express();
 app.use(cors()); // Habilita o CORS para todas as origens
 const PORT = 3000;
 
-const db = new sqlite3.Database('banco-de-dados.db');
+const db = new sqlite3.Database('database.db');
 
 // Criar a tabela 'tarefas' no banco de dados
 db.serialize(() => {
@@ -42,7 +42,7 @@ const verificarToken = (req, res, next) => {
 app.post('/tarefas', verificarToken, (req, res) => {
     const { tarefa } = req.body;
     // Inserir a nova tarefa no banco de dados
-    db.run("INSERT INTO tarefas (tarefa) VALUES (?)", [tarefa], function(err) {
+    db.run("INSERT INTO tarefas (tarefa) VALUES (?)", [tarefa], function (err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -82,7 +82,7 @@ app.put('/tarefas/:id', verificarToken, (req, res) => {
     const { id } = req.params;
     const { tarefa } = req.body;
     // Atualizar a tarefa com base no ID
-    db.run("UPDATE tarefas SET tarefa = ? WHERE id = ?", [tarefa, id], function(err) {
+    db.run("UPDATE tarefas SET tarefa = ? WHERE id = ?", [tarefa, id], function (err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
@@ -98,7 +98,7 @@ app.put('/tarefas/:id', verificarToken, (req, res) => {
 app.delete('/tarefas/:id', verificarToken, (req, res) => {
     const { id } = req.params;
     // Excluir a tarefa com base no ID
-    db.run("DELETE FROM tarefas WHERE id = ?", [id], function(err) {
+    db.run("DELETE FROM tarefas WHERE id = ?", [id], function (err) {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
